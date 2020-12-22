@@ -1,10 +1,5 @@
 - hosts: "frontend"
-  vars:
-    - x:
-        - 1
-        - 2
-        - 3
-        - 4   
+  become: yes  
   tasks:
     - name: "Installing load balancer software "
       package: 
@@ -40,13 +35,6 @@
                 server app{{ loop.index }} {{ i }}:80 check
                 {% endfor %}
       notify: restarting service
-
-    - name: "enabling port 8080"
-      firewalld:
-        port: "8080/tcp"
-        state: enabled
-        permanent: yes
-        immediate: yes
 
     - name: starting services
       service:
